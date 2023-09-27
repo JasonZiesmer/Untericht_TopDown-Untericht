@@ -23,9 +23,15 @@ public class Bullet : MonoBehaviour
             bulletVisuals.localScale = new Vector3(radius, radius, radius * 2);
     }
 
-    public void Launch(Vector2 direction)
+    public void Launch(PawnBase shooter, Vector2 targetedPosition)
     {
+        Vector2 direction = targetedPosition - shooter.GetPosition();
+        direction.Normalize();
+        
         startPosition = transform.position;
+        
+        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), shooter.GetComponent<Collider2D>());
+        
         GetComponent<Rigidbody2D>().AddForce(direction * speed, ForceMode2D.Impulse);
     }
 
