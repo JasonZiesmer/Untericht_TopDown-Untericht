@@ -14,6 +14,21 @@ public class EnemyController : MonoBehaviour
 
     private bool isTargetingPlayer = false;
 
+    private void Awake()
+    {
+        GameState.onStageChanged += OnGameStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        GameState.onStageChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState.State newState)
+    {
+        enabled = newState == GameState.State.InGame;
+    }
+
     private void Update()
     {
         if (!isTargetingPlayer)
