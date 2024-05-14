@@ -15,6 +15,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Transform bulletVisuals;
 
     private Vector2 startPosition;
+    private Vector2 travelDirection;
 
     private void OnValidate()
     {
@@ -28,11 +29,17 @@ public class Bullet : MonoBehaviour
         Vector2 direction = targetedPosition - shooter.GetPosition();
         direction.Normalize();
         
+        LaunchInDirection(shooter, direction);
+    }
+
+    public void LaunchInDirection(PawnBase shooter, Vector2 shootDirection)
+    {
         startPosition = transform.position;
         
         Physics2D.IgnoreCollision(GetComponent<Collider2D>(), shooter.GetComponent<Collider2D>());
         
-        GetComponent<Rigidbody2D>().AddForce(direction * speed, ForceMode2D.Impulse);
+        GetComponent<Rigidbody2D>().AddForce(shootDirection * speed, ForceMode2D.Impulse);
+        travelDirection = shootDirection;
     }
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -43,6 +50,7 @@ public class Bullet : MonoBehaviour
         if (healthPointManager != null)
         {
             healthPointManager.TakeDamage(damage);
+            FVXManager.Instance.PlayBloodSplat(healthPointManager.transform.position, travelDirection);
         }
         
     }

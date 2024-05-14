@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]        // automatically adds the component to the gameObject
-[RequireComponent(typeof(AgentRotate2d))]
 [RequireComponent(typeof(AgentOverride2d))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CircleCollider2D))]
@@ -19,6 +18,7 @@ public class Pawn : PawnBase      // pawn refers to the player's controlled char
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = 
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
